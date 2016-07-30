@@ -2,7 +2,7 @@ define(function(require, exports, module) {
     'use strict';
 
     // @ngInject
-    exports.LoginService = function($http, $window, lpPortal, lpCoreUtils) {
+    exports.AsaasService = function($http, $window, lpPortal, lpCoreUtils) {
 
         var self = this;
         var config = {
@@ -16,28 +16,40 @@ define(function(require, exports, module) {
             lpCoreUtils.extend(config, _config);
         };
 
-        this.doCheckAuthentication = function() {
-            var promise = this.getAuthentication().success(function( response ) {
-                self.handleSuccessfulAuthentication(response || {});
+        this.doAuthentication = function() {
+            var authentication = this.getAuthentication().success(function( response ) {
+
+               if (response.data.authenticated == "true") {
+                    self.error = null;
+                    self.handleSuccessfulAuthentication(response || {});
+                } else {
+                    self.error = response.data.errors;
+                    self.handleUnSuccessfulAuthentication(response || {});
+                }
+
             }).error(function(response) {
                 self.handleUnSuccessfulAuthentication(response || {});
             });
 
-            return promise;
+            return authentication;
         };
 
         this.doLogin = function(username, password) {
-            var promise = this.getLoginPromise(username, password).success(function( response ) {
+            var login = this.getLogin(username, password).success(function( response ) {
 
-                if (response) {
+                if (response.data.authenticated == "saved") {
                     self.error = null;
                     self.handleSuccessfulLogin(response || {});
+                } else {
+                    self.error = response.data.errors;
+                    self.handleUnSuccessfulLogin(response || {});
                 }
+
             }).error(function(response) {
                 self.error = response.errors[0].code;
             });
 
-            return promise;
+            return login;
         };
 
         this.getAuthentication = function() {
@@ -54,14 +66,14 @@ define(function(require, exports, module) {
             });
         };
 
-        this.getLoginPromise = function(username, password) {
+        this.getLogin = function(username, password) {
     
             var data = {
                 username: username,
                 password: password
             };
 
-            return $http.get(config.loginUrl, lpCoreUtils.buildQueryString(data), {
+            return $http.post(config.loginUrl, lpCoreUtils.buildQueryString(data), {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded;',
@@ -85,6 +97,9 @@ define(function(require, exports, module) {
             alert("Im logged in.");
         };
 
+        this.handleUnSuccessfulLogin = function( response ) {
+            alert("Im not logged in.");
+        };
     };
 });
 

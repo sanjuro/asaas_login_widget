@@ -15,11 +15,11 @@ define( function (require, exports, module) {
 
     // @ngInject
     function run() {
-        // Module is Bootstrapped
+
     }
 
     module.exports = base.createModule(module.name, deps)
-        .service(require('./login-service'))
+        .service(require('./asaas-service'))
         .controller(require('./controllers'))
         .run(run);
 });

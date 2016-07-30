@@ -1,3 +1,7 @@
 /**
  * Widget styles
  */
+
+ .panel-body {
+ 	width: 50%;
+ }

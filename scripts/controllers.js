@@ -2,7 +2,7 @@ define(function (require, exports) {
     'use strict';
 
     // @ngInject
-    exports.LoginController = function($scope, i18nUtils, lpCoreUtils, lpWidget, LoginService) {
+    exports.LoginController = function($scope, i18nUtils, lpCoreUtils, lpWidget, AsaasService) {
         var widget = lpWidget;
         var utils = lpCoreUtils;
 
@@ -19,17 +19,12 @@ define(function (require, exports) {
         $scope.doLogin = function() {
             $scope.$broadcast('autofill:update');
 
-            LoginService.doLogin($scope.user.id, $scope.user.password, $scope.user.remember).then(function(data) {
-                // Always assign error from service to our scope, so it can be visible
-                if (LoginService.error) {
-                    $scope.error = $scope.messages && $scope.messages[LoginService.error] || LoginService.error;
+            AsaasService.doLogin($scope.user.id, $scope.user.password, $scope.user.remember).then(function(data) {
+                if (AsaasService.error) {
+                    $scope.error = $scope.messages && $scope.messages[AsaasService.error] || AsaasService.error;
                 }
             });
         };
-
-        widget.addEventListener('preferencesSaved', function () {
-            widget.refreshHTML();
-        });
 
     };
 });
