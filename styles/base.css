@@ -3,5 +3,6 @@
  */
 
  .panel-body {
- 	width: 50%;
+    swidth: 50%;
+    margin: 0 auto; 
  }

@@ -19,7 +19,7 @@ define(function(require, exports, module) {
         this.doAuthentication = function() {
             var authentication = this.getAuthentication().success(function( response ) {
 
-               if (response.data.authenticated == "true") {
+               if (response.data == "true") {
                     self.error = null;
                     self.handleSuccessfulAuthentication(response || {});
                 } else {
@@ -35,9 +35,10 @@ define(function(require, exports, module) {
         };
 
         this.doLogin = function(username, password) {
+            alert(username);
             var login = this.getLogin(username, password).success(function( response ) {
 
-                if (response.data.authenticated == "saved") {
+                if (response.data == "saved") {
                     self.error = null;
                     self.handleSuccessfulLogin(response || {});
                 } else {
@@ -90,7 +91,7 @@ define(function(require, exports, module) {
         };
 
         this.handleUnSuccessfulAuthentication = function( response ) {
-            alert("Im not authenticatd.");
+            alert("Im not authenticated.");
         };
 
         this.handleSuccessfulLogin = function( response ) {

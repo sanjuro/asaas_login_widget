@@ -11,6 +11,19 @@ define(function (require, exports) {
         });
 
 		$scope.user = {};
+        $scope.authenticated = true;
+
+        $scope.doAuthentication = function() {
+            AsaasService.doAuthentication().then(function(data) {
+                console.log(data);
+                if (AsaasService.error) {
+                    $scope.error = $scope.messages && $scope.messages[AsaasService.error] || AsaasService.error;
+                } else {
+                    $scope.authenticated = true;
+                }
+            });
+            console.log('ad');
+        };
 
         $scope.allowSubmit = function() {
             return $scope.user.id;
@@ -18,8 +31,7 @@ define(function (require, exports) {
 
         $scope.doLogin = function() {
             $scope.$broadcast('autofill:update');
-
-            AsaasService.doLogin($scope.user.id, $scope.user.password, $scope.user.remember).then(function(data) {
+            AsaasService.doLogin($scope.user.username, $scope.user.password).then(function(data) {
                 if (AsaasService.error) {
                     $scope.error = $scope.messages && $scope.messages[AsaasService.error] || AsaasService.error;
                 }

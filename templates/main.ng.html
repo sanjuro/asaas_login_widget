@@ -1,4 +1,4 @@
-<div ng-controller="LoginController as loginCtrl" ng-class="responsiveClass">
+<div ng-controller="LoginController as loginCtrl" ng-init="doAuthentication()" ng-class="responsiveClass">
 
     <!--  FULL CONTENT -->
     <div class="lp-widget-content">
@@ -6,7 +6,7 @@
         <!--  BODY CONTENT -->
         <div class="panel-body">
 
-            <form role="form" ng-submit="doLogin()" novalidate="novalidate" g:onload="doAuthenticate()">
+            <form ng-hide="authenticated" role="form" ng-submit="doLogin()" novalidate="novalidate">
                 <div class="form-group">
                     <label class="sr-only" for="username">Username</label>
                     <input class="form-control input-sm" type="text" name="username" placeholder="Username"
